@@ -1,0 +1,45 @@
+# Build
+target/
+build/
+
+# Maven Wrapper
+!.mvn/wrapper/maven-wrapper.jar
+
+# Config / Secrets
+src/main/resources/application.properties
+.env
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
+
+# IDEs
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

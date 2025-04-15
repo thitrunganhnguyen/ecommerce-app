@@ -1,0 +1,26 @@
+version: '3.8' # Supported by your Docker Compose version
+
+services:
+  mysql-container:
+    image: mysql:latest
+    container_name: mysql-container
+    ports:
+      - "3306:3306"  # Map MySQL port
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mysql-data:/var/lib/mysql # Persist database data
+  spring-app:
+    build: .  # This tells Docker Compose to build the Spring Boot app from the Dockerfile
+    container_name: spring-app
+    ports:
+      - "8092:8092"
+    depends_on:
+      - mysql-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/${MYSQL_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+volumes:
+  mysql-data:
