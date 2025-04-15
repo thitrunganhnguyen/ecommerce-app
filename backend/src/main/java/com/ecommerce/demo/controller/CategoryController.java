@@ -27,7 +27,7 @@ public class CategoryController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createCategory(@Valid  @RequestBody Category category) {
-        if(Helper.notNull(categoryService.readCategory(category.getCategoryName()))) {
+        if(Helper.notNull(categoryService.getCategoryByName(category.getCategoryName()))) {
             return new ResponseEntity<>(new ApiResponse(false, "Category already exist"), HttpStatus.CONFLICT);
         }
         categoryService.createCategory(category);
@@ -37,18 +37,16 @@ public class CategoryController {
 
     @PostMapping("/update/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer categoryId, @Valid @RequestBody Category category) {
-        if(!categoryService.findById(categoryId)) {
-            return new ResponseEntity<>(new ApiResponse(false, "Category does not exists"), HttpStatus.NOT_FOUND);
+        try {
+            categoryService.editCategory(categoryId, category);
+            return ResponseEntity.ok(new ApiResponse(true, "Category has been updated"));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, ex.getMessage()));
         }
-        categoryService.editCategory(categoryId, category);
-        return new ResponseEntity<>(new ApiResponse(true, "Category has been updated"), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{categoryId}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Integer categoryId) {
-        if(!categoryService.findById(categoryId)) {
-            return new ResponseEntity<>(new ApiResponse(false, "Category does not exists"), HttpStatus.NOT_FOUND);
-        }
         categoryService.deleteCategory(categoryId);
         return new ResponseEntity<>(new ApiResponse(true, "Category has been deleted"), HttpStatus.OK);
     }
