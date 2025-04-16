@@ -27,9 +27,10 @@ public class CategoryController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createCategory(@Valid  @RequestBody Category category) {
-        if(Helper.notNull(categoryService.getCategoryByName(category.getCategoryName()))) {
-            return new ResponseEntity<>(new ApiResponse(false, "Category already exist"), HttpStatus.CONFLICT);
-        }
+        // Call createCategory(...).
+        // If something’s wrong, the service will throw and the handler will respond.
+        // If not, return 201 CREATED with a success message.
+
         categoryService.createCategory(category);
         return new ResponseEntity<>(new ApiResponse(true, "A new category created"), HttpStatus.CREATED);
     }
@@ -37,12 +38,9 @@ public class CategoryController {
 
     @PostMapping("/update/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer categoryId, @Valid @RequestBody Category category) {
-        try {
-            categoryService.editCategory(categoryId, category);
-            return ResponseEntity.ok(new ApiResponse(true, "Category has been updated"));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, ex.getMessage()));
-        }
+        categoryService.editCategory(categoryId, category);
+        return new ResponseEntity<>(new ApiResponse(true, "Category has been updated"), HttpStatus.OK);
+
     }
 
     @DeleteMapping("/delete/{categoryId}")
