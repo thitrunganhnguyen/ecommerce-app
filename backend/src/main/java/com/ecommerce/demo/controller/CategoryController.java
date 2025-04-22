@@ -16,8 +16,11 @@ import java.util.List;
 @RequestMapping("/category")
 public class CategoryController {
 
-    @Autowired
-    CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<Category>> getCategories() {
@@ -36,7 +39,7 @@ public class CategoryController {
     }
 
 
-    @PostMapping("/update/{categoryId}")
+    @PutMapping("/update/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer categoryId, @Valid @RequestBody Category category) {
         categoryService.editCategory(categoryId, category);
         return new ResponseEntity<>(new ApiResponse(true, "Category has been updated"), HttpStatus.OK);

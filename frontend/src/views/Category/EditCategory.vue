@@ -44,7 +44,7 @@ export default  {
       // don't need product property for update category
       delete this.category["products"];
       // await axios.post(`${this.baseURL}category/update/{this.id}`, this.category)
-      await axios.post(this.baseURL + "category/update/" + this.id, this.category)
+      await axios.put(this.baseURL + "category/update/" + this.id, this.category)
           .then(() => {
             this.$emit("fetchData");
             this.$router.push({name: "Category"});
