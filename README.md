@@ -1,4 +1,4 @@
-# 🛒 Ecommerce App
+# 🛒 Ecommerce App test
 
 A full-stack ecommerce web application built with:
 
